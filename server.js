@@ -34,9 +34,7 @@ app.get('/', (req, res) => {
 app.post('/signin', (req, res) => {
   if (req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password) {
-      res.json('success')
-    } else {
-      res.status(400).json('error logging in')
+      return res.json('success')
     }
 });
 
@@ -55,13 +53,19 @@ app.post('/register', (req, res) => {
 
 app.get('/profile/:id', (req, res) => {
   const { id } = req.params;
+
+  let found = false
+
   database.users.forEach((user) => {
     if (user.id === id) {
-      res.json(user);
-    } else {
-      res.status(404).json('no such user');
+      found = true;
+      return res.json(user);
     }
-  })
+  });
+
+  if(!found) {
+    return res.status(404).json('not found');
+  }
 });
 
 app.listen(3000, () => {
