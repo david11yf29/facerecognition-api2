@@ -1,9 +1,13 @@
 const express = require('express');
+const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors');
 
 const app = express();
 
 // 轉換 req 成 json 才可以傳給 server
 app.use(express.json());
+
+app.use(cors());
 
 const database = {
   users: [
